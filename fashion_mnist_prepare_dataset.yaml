@@ -1,0 +1,36 @@
+data_config:
+    dataset_provider: 'hugging face'
+    id: 'fashion_mnist'
+    name: null
+    meta_type: image
+    splits:
+        train: train
+        val: None
+        test: test
+    ratios:
+        test: 0.1
+        val: 0.05
+    load_ds_args: {}
+    x_keys: [image]
+    y_keys: [label]
+    tasks: [[label, classification]]
+
+batch_size: 64
+shuffle: true
+
+dataset_transforms:
+    train:
+        transform:
+            - name: img_to_tensor
+        target_transform:
+            - name: to_tensor
+    valid:
+        transform:
+            - name: img_to_tensor
+        target_transform:
+            - name: to_tensor
+    test:
+        transform:
+            - name: img_to_tensor
+        target_transform:
+            - name: to_tensor

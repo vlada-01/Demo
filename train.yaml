@@ -1,0 +1,21 @@
+log_train_metrics: true
+device: cuda
+epochs: 1
+num_of_iters: 1
+optimizer:
+    type: AdamW
+    args:
+        lr: 0.001
+lr_decay:
+    type: ExponentialLR
+    args:
+        gamma: 0.9
+loss_fns:
+    - out_key: label
+      weight: 1.0
+      fn:
+        type: CrossEntropyLoss
+        args: {}
+metrics: 
+    - out_key: label
+      metrics: [Accuracy]

@@ -1,0 +1,110 @@
+nodes:
+  - type: input
+    id: input_aligner
+    in_keys: [image]
+    out_keys: [x]
+    
+
+  - type: chain
+    id: conv_layers
+    layers_cfg:
+        - type: Conv2d
+          in_channels: 1
+          out_channels: 64
+          kernel_size: 3
+          padding: 1
+          
+        - type: BatchNorm2d
+          num_features: 64
+          
+        - type: ReLU
+        
+        - type: Conv2d
+          in_channels: 64
+          out_channels: 64
+          kernel_size: 3
+          padding: 1
+          
+        - type: BatchNorm2d
+          num_features: 64
+          
+        - type: ReLU
+
+        - type: MaxPool2d
+          kernel_size: 2
+          stride: 2
+
+        - type: Conv2d
+          in_channels: 64
+          out_channels: 128
+          kernel_size: 3
+          padding: 1
+          
+        - type: BatchNorm2d
+          num_features: 128
+          
+        - type: ReLU
+        
+        - type: Conv2d
+          in_channels: 128
+          out_channels: 128
+          kernel_size: 3
+          padding: 1
+          
+        - type: BatchNorm2d
+          num_features: 128
+          
+        - type: ReLU
+
+        - type: MaxPool2d
+          kernel_size: 2
+          stride: 2
+
+        - type: Flatten       
+    in_keys: [x]
+    out_keys: [x]
+
+  - type: layer
+    id: layer_1
+    layer_cfg:
+      type: Linear
+      in_features: 6272
+      out_features: 128
+    in_keys: [x]
+    out_keys: [x]
+
+  - type: layer
+    id: relu
+    layer_cfg:
+        type: ReLU
+    in_keys: [x]
+    out_keys: [x]
+    
+  - type: layer
+    id: dropout
+    layer_cfg:
+        type: Dropout
+        p: 0.3
+    in_keys: [x]
+    out_keys: [x]
+
+  - type: layer
+    id: final_layer
+    layer_cfg:
+      type: Linear
+      in_features: 128
+      out_features: 10
+    in_keys: [x]
+    out_keys: [label]
+
+dag:
+    node_ids: [input_aligner, conv_layers, layer_1, relu, dropout, final_layer]
+    edges: [
+        [input_aligner, conv_layers],
+        [conv_layers, layer_1],
+        [layer_1, relu],
+        [relu, dropout],
+        [dropout, final_layer]
+    ]
+    out_keys: [label]
+out_tasks: [[label, classification]]
