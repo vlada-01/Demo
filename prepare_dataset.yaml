@@ -2,7 +2,6 @@ data_config:
     dataset_provider: 'hugging face'
     id: 'fashion_mnist'
     name: null
-    meta_type: image
     splits:
         train: train
         val: None
@@ -13,10 +12,6 @@ data_config:
     load_ds_args: {}
     x_keys: [image]
     y_keys: [label]
-    tasks: [[label, classification]]
-
-batch_size: 64
-shuffle: true
 
 dataset_transforms:
     train:
@@ -34,3 +29,12 @@ dataset_transforms:
             - name: img_to_tensor
         target_transform:
             - name: to_tensor
+
+batch_size: 64
+shuffle: true
+
+data_meta_cfg:
+    meta_type: image
+    specs_mapping:
+        label: nesto
+

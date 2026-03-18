@@ -11,11 +11,10 @@ lr_decay:
     args:
         gamma: 0.9
 loss_fns:
-    - out_key: label
+    nesto:
       weight: 1.0
       fn:
         type: CrossEntropyLoss
         args: {}
-metrics: 
-    - out_key: label
-      metrics: [Accuracy]
+metrics:
+    nesto: [accuracy, precision] 
